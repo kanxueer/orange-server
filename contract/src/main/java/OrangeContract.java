@@ -13,6 +13,6 @@ class OrangeActiveRequest{
     List<KVParameter> parameters;
 }
 
-class getActiveResponse{
+class OrangeActiveResponse{
 
 }
