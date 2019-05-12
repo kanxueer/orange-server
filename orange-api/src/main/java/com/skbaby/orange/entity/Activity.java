@@ -4,6 +4,7 @@ package com.skbaby.orange.entity;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class Activity {
@@ -18,4 +19,5 @@ public class Activity {
     private int state;
     private Timestamp dataCreate_LastTime;
     private Timestamp dataChange_LastTime;
+    private List<Part> parts;
 }

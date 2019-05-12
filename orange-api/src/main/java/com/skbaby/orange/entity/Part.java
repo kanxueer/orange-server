@@ -2,6 +2,8 @@ package com.skbaby.orange.entity;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 @Data
 public class Part {
     private int id;
@@ -11,4 +13,6 @@ public class Part {
     private int shareType;
     private int shareId;
     private int state;
+    private Timestamp dataCreate_LastTime;
+    private Timestamp dataChange_LastTime;
 }

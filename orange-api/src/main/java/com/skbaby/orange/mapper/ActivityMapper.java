@@ -1,29 +1,60 @@
 package com.skbaby.orange.mapper;
 
 import com.skbaby.orange.entity.Activity;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 
 @Mapper
 public interface ActivityMapper {
 
     /**
      * 查询活动
+     *
      * @param id activity id
      * @return Activity
      */
-    @Select({"select id,title,description,startTime,endTime,unit,location,quantity,dataCreate_LastTime,dataChange_LastTime from activity where id = #{id}"})
+    @Select({"select id,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where id = #{id}"})
+    @Results({
+            @Result(column = "id", property = "parts",
+                    many = @Many(
+                            select = "com.skbaby.orange.mapper.PartMapper.queryByActivityId",
+                            fetchType = FetchType.LAZY
+                    )
+            )
+    })
     Activity queryById(int id);
 
     /**
      * 新增Activity对象
+     *
      * @param activity 对象
      * @return 主键id
      */
     @Insert({"insert into activity(title,description,startTime,endTime,unit,location,quantity)" +
-                    "values(#{title},#{description},#{startTime, jdbcType=TIMESTAMP},#{endTime, jdbcType=TIMESTAMP},#{unit},#{location},#{quantity})"})
-    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn="id")
+            "values(#{title},#{description},#{startTime, jdbcType=TIMESTAMP},#{endTime, jdbcType=TIMESTAMP},#{unit},#{location},#{quantity})"})
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insertActivity(Activity activity);
+
+    /**
+     * 更新Activity对象
+     *
+     * @param activity 对象
+     * @return 主键id
+     */
+    @Insert({"update activity set title=#{title},description=#{description},startTime=#{startTime, jdbcType=TIMESTAMP},endTime=#{endTime, jdbcType=TIMESTAMP}," +
+            "unit=#{unit},location=#{location},quantity=#{quantity} where id=#{id}"})
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    int updateActivity(Activity activity);
+
+
+    /**
+     * 删除Activity对象
+     *
+     * @param id id
+     * @return 主键id
+     */
+    @Insert({"update activity set state= 0 where id=#{id}"})
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    int deleteActivity(int id);
+
 }

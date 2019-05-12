@@ -21,18 +21,32 @@ public class ActivityService {
         Activity activity = convertActivity(requestType);
         int rows = activityMapper.insertActivity(activity);
         if (rows != 1) {
-            throw new DaoException("新增数据失败");
+            throw new DaoException();
         }
         return activity.getId();
     }
 
+    public int updateActivity(RequestType requestType) {
+        Activity activity = convertActivity(requestType);
+        int rows = activityMapper.updateActivity(activity);
+        return activity.getId();
+    }
+
+    public void deleteActivity(int id) throws DaoException {
+        int rows = activityMapper.deleteActivity(id);
+        if (rows != 1){
+            throw new DaoException();
+        }
+    }
+
     private Activity convertActivity(RequestType requestType) {
         Activity activity = new Activity();
+        activity.setId(requestType.getActivityId());
         activity.setTitle(requestType.getTitle());
         activity.setDescription(requestType.getDescription());
         activity.setStartTime(requestType.getStartTime());
         activity.setEndTime(requestType.getEndTime());
-        activity.setQuantity(requestType.getQuantity());
+        activity.setQuantity(requestType.getActivityQuantity());
         activity.setLocation(requestType.getPosition());
         activity.setUnit(requestType.getUnit());
         return activity;
