@@ -31,34 +31,32 @@ public class VolatileAspect {
     }
 
     @Around("pointCut()")
-    public Object Interceptor(ProceedingJoinPoint pjp) {
+    public String Interceptor(ProceedingJoinPoint pjp) {
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
         HttpServletRequest request = sra.getRequest();
         String token = request.getHeader("token");
+        ResponseType response = new ResponseType();
         if (StringUtils.isEmpty(token)){
-            ResponseType response = new ResponseType();
             response.setCode(ErrorCode.SECURITY_ERROR.getCode());
             response.setErr_msg(ErrorCode.SECURITY_ERROR.getMsg());
-            return response;
+            return JSON.toJSONString(response);
         }
         String userInfo = redisUtil.get(token);
         if (StringUtils.isEmpty(userInfo)){
-            ResponseType response = new ResponseType();
             response.setCode(ErrorCode.NEED_REGIST.getCode());
             response.setErr_msg(ErrorCode.NEED_REGIST.getMsg());
-            return response;
+            return JSON.toJSONString(response);
         }
-        Object result = null;
         try {
             WeChatUser user = JSON.parseObject(userInfo, WeChatUser.class);
             SecurityThreadLocal.set(user);
-            result = pjp.proceed();
+            response = (ResponseType) pjp.proceed();
         } catch (Throwable e) {
             e.printStackTrace();
         }finally {
             SecurityThreadLocal.remove();
         }
-        return result;
+        return JSON.toJSONString(response);
     }
 }

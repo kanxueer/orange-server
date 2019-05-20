@@ -1,6 +1,5 @@
 package com.skbaby.orange.mapper;
 
-import com.skbaby.orange.entity.Part;
 import com.skbaby.orange.entity.WeChatUser;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

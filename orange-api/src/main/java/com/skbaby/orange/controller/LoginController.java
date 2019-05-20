@@ -51,8 +51,8 @@ public class LoginController {
     private ResponseType getOpenId(String code){
         ResponseType responseType = ResponseUtil.defaultResponse();
         String url = URL_OPENID.replace("APPID", propertiesConfig.getAppId()).replace("SECRET", propertiesConfig.getAppSecret()).replace("JSCODE", code);
-        WeChatOpenIDResponse response = restTemplate.getForObject(url, WeChatOpenIDResponse.class);
-
+        String s = restTemplate.getForObject(url, String.class);
+        WeChatOpenIDResponse response = JSON.parseObject(s, WeChatOpenIDResponse.class);
         if (response != null && Integer.parseInt(response.getErrcode()) == 0) {
             //成功
             String openId = response.getOpenid();

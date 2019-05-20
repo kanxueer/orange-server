@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 public class PartController {
@@ -21,16 +22,30 @@ public class PartController {
     private PartService partService;
 
     /**
-     * 查询活动
+     * 查询PartID查询
      *
      * @param id id
      * @return object
      */
     @SecurityAspect
     @GetMapping(value = "/orange/queue/{id}")
-    public String getPartActivityId(@PathVariable("id") Integer id) {
+    public String getPartByPartId(@PathVariable("id") Integer id) {
         ResponseType responseType = ResponseUtil.defaultResponse();
-        Part part = partService.queryPartByActivityId(id);
+        List<Part> part = partService.queryPartByActivityId(id);
+        responseType.setData(part);
+        return JSON.toJSONString(responseType);
+    }
+
+    /**
+     * 根据UserID查询
+     *
+     * @return object
+     */
+    @SecurityAspect
+    @GetMapping(value = "/orange/queue/")
+    public String getPartByUserId() {
+        ResponseType responseType = ResponseUtil.defaultResponse();
+        List<Part> part = partService.queryPartByUserId();
         responseType.setData(part);
         return JSON.toJSONString(responseType);
     }

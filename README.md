@@ -75,4 +75,10 @@ body:
 }
 ```
 
-6.用户这块在想想
+6.注册
+path: /orange/login
+method: post
+body:
+{
+    code: ''
+}

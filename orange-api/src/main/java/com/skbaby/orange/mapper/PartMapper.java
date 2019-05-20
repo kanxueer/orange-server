@@ -7,16 +7,18 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface PartMapper{
 
     /**
      * 通过活动ID查询排队
-     * @param id ActivityID
+     * @param activityId ActivityID
      * @return Part
      */
-    @Select({"select id,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where activityId = #{id}"})
-    Part queryByActivityId(int id);
+    @Select({"select id,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where activityId = #{activityId}"})
+    List<Part> queryByActivityId(int activityId);
 
     /**
      * 通过ID查询排队
@@ -25,6 +27,14 @@ public interface PartMapper{
      */
     @Select({"select id,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where id = #{id}"})
     Part queryById(int id);
+
+    /**
+     * 通过UserID查询排队
+     * @param userId id
+     * @return Part
+     */
+    @Select({"select id,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where id = #{userId}"})
+    List<Part> queryByUserId(int userId);
 
     /**
      * 新增排队对象

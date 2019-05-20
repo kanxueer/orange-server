@@ -9,14 +9,21 @@ import com.skbaby.orange.util.SecurityThreadLocal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PartService {
 
     @Autowired
     private PartMapper partMapper;
 
-    public Part queryPartByActivityId(int activityId) {
+    public List<Part> queryPartByActivityId(int activityId) {
         return partMapper.queryByActivityId(activityId);
+    }
+
+    public List<Part> queryPartByUserId() {
+        WeChatUser user = SecurityThreadLocal.get();
+        return partMapper.queryByActivityId(user.getId());
     }
 
     public Part queryPartById(int activityId) {
