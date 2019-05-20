@@ -8,10 +8,11 @@ import com.skbaby.orange.dto.WeChatOpenIDResponse;
 import com.skbaby.orange.entity.WeChatUser;
 import com.skbaby.orange.enums.ErrorCode;
 import com.skbaby.orange.exception.DaoException;
+import com.skbaby.orange.properties.PropertiesConfig;
 import com.skbaby.orange.service.WeChatUserService;
 import com.skbaby.orange.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,14 +30,13 @@ public class LoginController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private PropertiesConfig propertiesConfig;
+
     /**
      * 微信获取accessToken的url
      */
     private static final String URL_OPENID = "https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code";
-
-    private static final String AppID = "wxf70738452270b30a";
-    private static final String AppSecret = "f4598290007c85c70a77afdd7e6629b6";
-
 
     @PostMapping(value = "/orange/login")
     public String doLogin(@RequestBody RequestType request) {
@@ -47,7 +47,7 @@ public class LoginController {
 
     private ResponseType getOpenId(String code){
         ResponseType responseType = ResponseUtil.defaultResponse();
-        String url = URL_OPENID.replace("APPID", AppID).replace("SECRET", AppSecret).replace("JSCODE", code);
+        String url = URL_OPENID.replace("APPID", propertiesConfig.getAppId()).replace("SECRET", propertiesConfig.getAppSecret()).replace("JSCODE", code);
         WeChatOpenIDResponse response = restTemplate.getForObject(url, WeChatOpenIDResponse.class);
 
         if (response != null && Integer.parseInt(response.getErrcode()) == 0) {
