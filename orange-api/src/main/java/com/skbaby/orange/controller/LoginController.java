@@ -44,23 +44,23 @@ public class LoginController {
     @PostMapping(value = "/orange/login")
     public String doLogin(@RequestBody RequestType request) {
         String code = request.getCode();
-        ResponseType response =  getOpenId(code);
+        ResponseType response = getOpenId(code);
         return JSON.toJSONString(response);
     }
 
-    private ResponseType getOpenId(String code){
+    private ResponseType getOpenId(String code) {
         ResponseType responseType = ResponseUtil.defaultResponse();
         String url = URL_OPENID.replace("APPID", propertiesConfig.getAppId()).replace("SECRET", propertiesConfig.getAppSecret()).replace("JSCODE", code);
         String s = restTemplate.getForObject(url, String.class);
         WeChatOpenIDResponse response = JSON.parseObject(s, WeChatOpenIDResponse.class);
-        if (response != null && Integer.parseInt(response.getErrcode()) == 0) {
+        if (response != null && response.getOpenid() != null && response.getSession_key() != null) {
             //成功
             String openId = response.getOpenid();
             String session_key = response.getSession_key();
             try {
                 // 判断用户是否存在 openID唯一
                 WeChatUser weChatUser = queryWeChatUser(openId);
-                if (weChatUser == null){
+                if (weChatUser == null) {
                     // 创建用户，只有一个openId字段
                     weChatUser = createWeChatUser(openId);
                 }
@@ -72,6 +72,7 @@ public class LoginController {
                 HashMap<String, String> result = new HashMap<>();
                 result.put("openid", openId);
                 result.put("id", weChatUser.getId() + "");
+                result.put("token", token);
                 responseType.setData(result);
             } catch (DaoException e) {
                 responseType.setCode(ErrorCode.INSERT_ERROR.getCode());

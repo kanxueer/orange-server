@@ -36,27 +36,29 @@ public class VolatileAspect {
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
         HttpServletRequest request = sra.getRequest();
         String token = request.getHeader("token");
-        ResponseType response = new ResponseType();
         if (StringUtils.isEmpty(token)){
+            ResponseType response = new ResponseType();
             response.setCode(ErrorCode.SECURITY_ERROR.getCode());
             response.setErr_msg(ErrorCode.SECURITY_ERROR.getMsg());
             return JSON.toJSONString(response);
         }
         String userInfo = redisUtil.get(token);
         if (StringUtils.isEmpty(userInfo)){
+            ResponseType response = new ResponseType();
             response.setCode(ErrorCode.NEED_REGIST.getCode());
             response.setErr_msg(ErrorCode.NEED_REGIST.getMsg());
             return JSON.toJSONString(response);
         }
+        String result = "";
         try {
             WeChatUser user = JSON.parseObject(userInfo, WeChatUser.class);
             SecurityThreadLocal.set(user);
-            response = (ResponseType) pjp.proceed();
+            result = pjp.proceed().toString();
         } catch (Throwable e) {
             e.printStackTrace();
         }finally {
             SecurityThreadLocal.remove();
         }
-        return JSON.toJSONString(response);
+        return result;
     }
 }
