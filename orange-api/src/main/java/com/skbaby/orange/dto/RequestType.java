@@ -22,4 +22,11 @@ public class RequestType {
 
     private int shareType;
     private int shareId;
+
+    //微信授权码
+    private String code;
+    private String openId;
+
+    private String username;
+    private String profile;
 }

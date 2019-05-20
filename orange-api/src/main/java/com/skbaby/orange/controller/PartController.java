@@ -1,10 +1,12 @@
 package com.skbaby.orange.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.skbaby.orange.aspect.SecurityAspect;
+import com.skbaby.orange.controller.util.ResponseUtil;
 import com.skbaby.orange.dto.RequestType;
 import com.skbaby.orange.dto.ResponseType;
 import com.skbaby.orange.entity.Part;
-import com.skbaby.orange.enums.ResponseCode;
+import com.skbaby.orange.enums.ErrorCode;
 import com.skbaby.orange.exception.DaoException;
 import com.skbaby.orange.service.PartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +26,10 @@ public class PartController {
      * @param id id
      * @return object
      */
+    @SecurityAspect
     @GetMapping(value = "/orange/queue/{id}")
     public String getPartActivityId(@PathVariable("id") Integer id) {
-        ResponseType responseType = defaultResponse();
+        ResponseType responseType = ResponseUtil.defaultResponse();
         Part part = partService.queryPartByActivityId(id);
         responseType.setData(part);
         return JSON.toJSONString(responseType);
@@ -38,9 +41,10 @@ public class PartController {
      * @param requestType requestType
      * @return int
      */
+    @SecurityAspect
     @PostMapping(value = "/orange/queue")
     public String insertActivity(@RequestBody RequestType requestType) {
-        ResponseType responseType = defaultResponse();
+        ResponseType responseType = ResponseUtil.defaultResponse();
         Integer partId;
         try {
             partId = partService.insertPart(requestType);
@@ -48,16 +52,9 @@ public class PartController {
             data.put("id", partId);
             responseType.setData(data);
         } catch (DaoException e) {
-            responseType.setCode(ResponseCode.Insert_Error.getCode());
-            responseType.setErr_msg(ResponseCode.Insert_Error.getMsg());
+            responseType.setCode(ErrorCode.INSERT_ERROR.getCode());
+            responseType.setErr_msg(ErrorCode.INSERT_ERROR.getMsg());
         }
         return JSON.toJSONString(responseType);
-    }
-
-    private ResponseType defaultResponse() {
-        ResponseType responseType = new ResponseType();
-        responseType.setCode(ResponseCode.SUCCESS.getCode());
-        responseType.setErr_msg(ResponseCode.SUCCESS.getMsg());
-        return responseType;
     }
 }

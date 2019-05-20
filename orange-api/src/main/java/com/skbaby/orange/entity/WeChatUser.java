@@ -3,7 +3,7 @@ package com.skbaby.orange.entity;
 import lombok.Data;
 
 @Data
-public class User {
+public class WeChatUser {
     private int id;
     private String username;
     private String openid;
