@@ -5,6 +5,9 @@ public enum ErrorCode {
     SUCCESS(0,"成功"),
     INSERT_ERROR(1,"新增失败"),
     DELETE_ERROR(2,"删除失败"),
+    SECURITY_ERROR(3,"需要登录访问"),
+    NEED_REGIST(4,"需要注册"),
+
 
     //微信错误
     SYSTEM_BUSY(-1,"系统繁忙，此时请开发者稍候再试"),

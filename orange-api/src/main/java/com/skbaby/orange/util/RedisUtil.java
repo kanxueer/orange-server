@@ -2,19 +2,24 @@ package com.skbaby.orange.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
+@Component
 public class RedisUtil{
 
 	@Autowired
-	private static RedisTemplate<String, String> redisTemplate;
+	private RedisTemplate<String, String> redisTemplate;
 
 
-	public static void save(String key, String object) {
+	public void save(String key, String object) {
 		// 不设置过期时间
 		redisTemplate.opsForValue().set(key, object);
 	}
 
-	public static String get(String key) {
+	public String get(String key) {
 		String value = redisTemplate.opsForValue().get(key);
 		if (value == null) {
 			return null;
@@ -22,7 +27,7 @@ public class RedisUtil{
 		return value;
 	}
 
-	public static void remove(String key) {
+	public void remove(String key) {
 		redisTemplate.delete(key);
 	}
 }

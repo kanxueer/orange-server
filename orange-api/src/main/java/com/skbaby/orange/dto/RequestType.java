@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 
 @Data
 public class RequestType {
+    private String token;
+
     private int activityId;
     private int userId;
     private int partId;

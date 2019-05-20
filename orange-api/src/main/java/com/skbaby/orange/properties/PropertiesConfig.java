@@ -10,9 +10,9 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:application.properties")
 public class PropertiesConfig {
 
-    @Value("${orange.security.social.weixin.app-id}")
+    @Value("${orange.security.social.wechat.app-id}")
     private String appId;
 
-    @Value("orange.security.social.weixin.app-secret")
+    @Value("${orange.security.social.wechat.app-secret}")
     private String appSecret;
 }

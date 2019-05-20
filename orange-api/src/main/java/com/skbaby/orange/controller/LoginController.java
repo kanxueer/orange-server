@@ -33,6 +33,9 @@ public class LoginController {
     @Autowired
     private PropertiesConfig propertiesConfig;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     /**
      * 微信获取accessToken的url
      */
@@ -64,7 +67,7 @@ public class LoginController {
                 // 生成Token
                 String token = DigestUtils.md5DigestAsHex((openId + "_" + System.currentTimeMillis() + "_" + session_key).getBytes());
                 // 保存到Redis里面，不设置过期时间
-                RedisUtil.save(token, JSON.toJSONString(weChatUser));
+                redisUtil.save(token, JSON.toJSONString(weChatUser));
 
                 HashMap<String, String> result = new HashMap<>();
                 result.put("openid", openId);

@@ -2,8 +2,10 @@ package com.skbaby.orange.service;
 
 import com.skbaby.orange.dto.RequestType;
 import com.skbaby.orange.entity.Activity;
+import com.skbaby.orange.entity.WeChatUser;
 import com.skbaby.orange.exception.DaoException;
 import com.skbaby.orange.mapper.ActivityMapper;
+import com.skbaby.orange.util.SecurityThreadLocal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,8 @@ public class ActivityService {
     private ActivityMapper activityMapper;
 
     public Activity queryActivityById(int id) {
-        return activityMapper.queryById(id);
+        WeChatUser user = SecurityThreadLocal.get();
+        return activityMapper.queryById(id, user.getId());
     }
 
     public int insertActivity(RequestType requestType) throws DaoException {
@@ -28,12 +31,13 @@ public class ActivityService {
 
     public int updateActivity(RequestType requestType) {
         Activity activity = convertActivity(requestType);
-        int rows = activityMapper.updateActivity(activity);
+        activityMapper.updateActivity(activity);
         return activity.getId();
     }
 
     public void deleteActivity(int id) throws DaoException {
-        int rows = activityMapper.deleteActivity(id);
+        WeChatUser user = SecurityThreadLocal.get();
+        int rows = activityMapper.deleteActivity(id, user.getId());
         if (rows != 1){
             throw new DaoException();
         }
@@ -41,7 +45,9 @@ public class ActivityService {
 
     private Activity convertActivity(RequestType requestType) {
         Activity activity = new Activity();
+        WeChatUser user = SecurityThreadLocal.get();
         activity.setId(requestType.getActivityId());
+        activity.setUserId(user.getId());
         activity.setTitle(requestType.getTitle());
         activity.setDescription(requestType.getDescription());
         activity.setStartTime(requestType.getStartTime());

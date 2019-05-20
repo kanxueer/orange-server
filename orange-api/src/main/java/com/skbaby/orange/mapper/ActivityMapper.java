@@ -13,7 +13,7 @@ public interface ActivityMapper {
      * @param id activity id
      * @return Activity
      */
-    @Select({"select id,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where id = #{id}"})
+    @Select({"select id,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where id = #{id} and userId= #{userId}"})
     @Results({
             @Result(column = "id", property = "parts",
                     many = @Many(
@@ -22,7 +22,7 @@ public interface ActivityMapper {
                     )
             )
     })
-    Activity queryById(int id);
+    Activity queryById(int id, int userId);
 
     /**
      * 新增Activity对象
@@ -30,8 +30,8 @@ public interface ActivityMapper {
      * @param activity 对象
      * @return 主键id
      */
-    @Insert({"insert into activity(title,description,startTime,endTime,unit,location,quantity)" +
-            "values(#{title},#{description},#{startTime, jdbcType=TIMESTAMP},#{endTime, jdbcType=TIMESTAMP},#{unit},#{location},#{quantity})"})
+    @Insert({"insert into activity(userId,title,description,startTime,endTime,unit,location,quantity)" +
+            "values(#{userId},#{title},#{description},#{startTime, jdbcType=TIMESTAMP},#{endTime, jdbcType=TIMESTAMP},#{unit},#{location},#{quantity})"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insertActivity(Activity activity);
 
@@ -42,7 +42,7 @@ public interface ActivityMapper {
      * @return 主键id
      */
     @Insert({"update activity set title=#{title},description=#{description},startTime=#{startTime, jdbcType=TIMESTAMP},endTime=#{endTime, jdbcType=TIMESTAMP}," +
-            "unit=#{unit},location=#{location},quantity=#{quantity} where id=#{id}"})
+            "unit=#{unit},location=#{location},quantity=#{quantity} where id=#{id} and userId=#{userId}"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int updateActivity(Activity activity);
 
@@ -53,8 +53,8 @@ public interface ActivityMapper {
      * @param id id
      * @return 主键id
      */
-    @Insert({"update activity set state= 0 where id=#{id}"})
+    @Insert({"update activity set state= 0 where id=#{id} and userId=#{userId}"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    int deleteActivity(int id);
+    int deleteActivity(int id, int userId);
 
 }

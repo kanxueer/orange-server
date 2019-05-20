@@ -21,7 +21,7 @@ public class ActivityServiceTest {
 
     @Test
     public void queryActivityById() {
-        Activity activity = activityMapper.queryById(10000);
+        Activity activity = activityMapper.queryById(10000, 100);
         System.out.println(activity.toString());
     }
 

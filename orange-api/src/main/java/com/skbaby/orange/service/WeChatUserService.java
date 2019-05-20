@@ -30,7 +30,7 @@ public class WeChatUserService {
 
     public int updateWeChatUser(RequestType requestType){
         WeChatUser weChatUser = convertWeChatUser(requestType);
-        int rows = weChatUserMapper.updateWeChatUser(weChatUser);
+        weChatUserMapper.updateWeChatUser(weChatUser);
         return weChatUser.getId();
     }
 
@@ -41,5 +41,4 @@ public class WeChatUserService {
         weChatUser.setProfile(requestType.getProfile());
         return weChatUser;
     }
-
 }
