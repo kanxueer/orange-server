@@ -42,7 +42,7 @@ public class PartController {
      * @return object
      */
     @SecurityAspect
-    @GetMapping(value = "/orange/queue/")
+    @GetMapping(value = "/orange/queue")
     public String getPartByUserId() {
         ResponseType responseType = ResponseUtil.defaultResponse();
         List<Part> part = partService.queryPartByUserId();

@@ -42,7 +42,7 @@ public class ActivityController {
      * @return object
      */
     @SecurityAspect
-    @GetMapping(value = "/orange/activity/")
+    @GetMapping(value = "/orange/activity")
     public String getActivityByUserId() {
         ResponseType responseType = ResponseUtil.defaultResponse();
         List<Activity> activities = activityService.queryActivityByUserId();
