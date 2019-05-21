@@ -82,3 +82,14 @@ body:
 {
     code: ''
 }
+
+7.查询用户的所有活动
+```
+path: /orange/activity
+method: get
+
+
+8.查询用户的所有排队
+```
+path: /orange/queue
+method: get
