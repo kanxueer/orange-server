@@ -31,3 +31,4 @@ orange-api/src/main/resources/security.properties
 orange-api/target/
 orange-api/src/main/resources/static/
 orange-api/src/main/resources/templates/
+orange-api/src/main/resources/application.properties
