@@ -9,6 +9,8 @@ import com.skbaby.orange.util.SecurityThreadLocal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ActivityService {
 
@@ -18,6 +20,11 @@ public class ActivityService {
     public Activity queryActivityById(int id) {
         WeChatUser user = SecurityThreadLocal.get();
         return activityMapper.queryById(id, user.getId());
+    }
+
+    public List<Activity> queryActivityByUserId() {
+        WeChatUser user = SecurityThreadLocal.get();
+        return activityMapper.queryByUserId(user.getId());
     }
 
     public int insertActivity(RequestType requestType) throws DaoException {

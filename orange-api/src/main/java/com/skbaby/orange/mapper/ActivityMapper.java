@@ -4,8 +4,27 @@ import com.skbaby.orange.entity.Activity;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 
+import java.util.List;
+
 @Mapper
 public interface ActivityMapper {
+
+    /**
+     * 查询活动
+     *
+     * @param userId userId
+     * @return Activity
+     */
+    @Select({"select id,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where userId= #{userId}"})
+    @Results({
+            @Result(column = "id", property = "parts",
+                    many = @Many(
+                            select = "com.skbaby.orange.mapper.PartMapper.queryByActivityId",
+                            fetchType = FetchType.LAZY
+                    )
+            )
+    })
+    List<Activity> queryByUserId(int userId);
 
     /**
      * 查询活动

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 public class ActivityController {
@@ -34,6 +35,21 @@ public class ActivityController {
         responseType.setData(activity);
         return JSON.toJSONString(responseType);
     }
+
+    /**
+     * 查询用户的所有活动
+     *
+     * @return object
+     */
+    @SecurityAspect
+    @GetMapping(value = "/orange/activity/")
+    public String getActivityByUserId() {
+        ResponseType responseType = ResponseUtil.defaultResponse();
+        List<Activity> activities = activityService.queryActivityByUserId();
+        responseType.setData(activities);
+        return JSON.toJSONString(responseType);
+    }
+
 
     /**
      * 创建活动
