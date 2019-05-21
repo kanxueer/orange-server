@@ -15,8 +15,9 @@ public interface ActivityMapper {
      * @param userId userId
      * @return Activity
      */
-    @Select({"select id,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where userId= #{userId}"})
+    @Select({"select ID,userId,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where userId= #{userId}"})
     @Results({
+            @Result(property = "id", column = "id"),
             @Result(column = "id", property = "parts",
                     many = @Many(
                             select = "com.skbaby.orange.mapper.PartMapper.queryByActivityId",
@@ -32,8 +33,9 @@ public interface ActivityMapper {
      * @param id activity id
      * @return Activity
      */
-    @Select({"select id,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where id = #{id} and userId= #{userId}"})
+    @Select({"select id,userId,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where id = #{id} and userId= #{userId}"})
     @Results({
+            @Result(property = "id", column = "id"),
             @Result(column = "id", property = "parts",
                     many = @Many(
                             select = "com.skbaby.orange.mapper.PartMapper.queryByActivityId",
