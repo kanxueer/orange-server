@@ -1,5 +1,6 @@
 package com.skbaby.orange.mapper;
 
+import com.skbaby.orange.entity.Activity;
 import com.skbaby.orange.entity.Part;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -45,4 +46,24 @@ public interface PartMapper{
             "values(#{userId},#{activityId},#{quantity},#{shareType},#{shareId})"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insertPart(Part part);
+
+    /**
+     * 删除
+     *
+     * @param id id
+     * @return 主键id
+     */
+    @Insert({"update part set state= 0 where id=#{id}"})
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    int deletePart(int id);
+
+    /**
+     * 更新Part对象
+     *
+     * @param part 对象
+     * @return 主键id
+     */
+    @Insert({"update part set quantity=#{quantity} where id=#{id}"})
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    int updatePart(Part part);
 }

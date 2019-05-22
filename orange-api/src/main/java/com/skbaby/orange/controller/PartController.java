@@ -87,4 +87,40 @@ public class PartController {
         }
         return JSON.toJSONString(responseType);
     }
+
+    /**
+     * 删除Part
+     * @param id id
+     * @return responseType
+     */
+    @SecurityAspect
+    @DeleteMapping(value = "/orange/queue/{id}")
+    public String deletePart(@PathVariable("id") Integer id){
+        ResponseType responseType = ResponseUtil.defaultResponse();
+        try {
+            partService.deletePart(id);
+        } catch (DaoException e) {
+            responseType.setCode(ErrorCode.DELETE_ERROR.getCode());
+            responseType.setErr_msg(ErrorCode.DELETE_ERROR.getMsg());
+        }
+        return JSON.toJSONString(responseType);
+    }
+
+    /**
+     * 更新
+     * @param requestType requestType
+     * @return id
+     */
+    @SecurityAspect
+    @PutMapping(value = "/orange/queue")
+    public String updatePart(@RequestBody RequestType requestType) {
+        ResponseType responseType = ResponseUtil.defaultResponse();
+
+        int part = partService.updatePart(requestType);
+        HashMap<String, Integer> data = new HashMap<>();
+        data.put("id", part);
+        responseType.setData(data);
+
+        return JSON.toJSONString(responseType);
+    }
 }

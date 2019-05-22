@@ -74,8 +74,8 @@ public interface ActivityMapper {
      * @param id id
      * @return 主键id
      */
-    @Insert({"update activity set state= 0 where id=#{id} and userId=#{userId}"})
+    @Insert({"update activity set state= 0 where id=#{id}"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    int deleteActivity(int id, int userId);
+    int deleteActivity(int id);
 
 }

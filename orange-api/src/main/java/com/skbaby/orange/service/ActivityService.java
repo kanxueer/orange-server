@@ -2,7 +2,6 @@ package com.skbaby.orange.service;
 
 import com.skbaby.orange.dto.RequestType;
 import com.skbaby.orange.entity.Activity;
-import com.skbaby.orange.entity.WeChatUser;
 import com.skbaby.orange.exception.DaoException;
 import com.skbaby.orange.mapper.ActivityMapper;
 import com.skbaby.orange.util.SecurityThreadLocal;
@@ -41,7 +40,7 @@ public class ActivityService {
     }
 
     public void deleteActivity(int id) throws DaoException {
-        int rows = activityMapper.deleteActivity(id, SecurityThreadLocal.get().getUserId());
+        int rows = activityMapper.deleteActivity(id);
         if (rows != 1){
             throw new DaoException();
         }
