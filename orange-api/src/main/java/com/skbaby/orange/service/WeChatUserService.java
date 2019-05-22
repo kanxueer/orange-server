@@ -49,7 +49,7 @@ public class WeChatUserService {
 
     private WeChatUser convertWeChatUser(RequestType requestType) {
         WeChatUser weChatUser = new WeChatUser();
-        weChatUser.setId(requestType.getUserId());
+        weChatUser.setId(SecurityThreadLocal.get().getUserId());
         weChatUser.setOpenid(requestType.getOpenId());
         weChatUser.setUsername(requestType.getUsername());
         weChatUser.setProfile(requestType.getProfile());
