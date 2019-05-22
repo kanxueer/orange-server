@@ -37,8 +37,8 @@ public class WeChatUserService {
         weChatUserMapper.updateWeChatUser(weChatUser);
         weChatUser = weChatUserMapper.queryByUserId(weChatUser.getId());
         //更新Redis
-        redisUtil.remove(requestType.getToken());
-        redisUtil.save(requestType.getToken(), JSON.toJSONString(weChatUser));
+        redisUtil.remove(SecurityThreadLocal.get().getToken());
+        redisUtil.save(SecurityThreadLocal.get().getToken(), JSON.toJSONString(weChatUser));
 
         return weChatUser.getId();
     }
