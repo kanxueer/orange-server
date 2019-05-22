@@ -15,8 +15,17 @@ public interface WeChatUserMapper {
      * @param openid openid
      * @return user
      */
-    @Select({"select id,username,openid,profile,state from wechat_user where openid = #{openid}"})
+    @Select({"select id,username,openid,profile,state,dataCreate_LastTime,dataChange_LastTime from wechat_user where openid = #{openid}"})
     WeChatUser queryByOpenId(String openid);
+
+    /**
+     * 通过userId查询用户
+     *
+     * @param id id
+     * @return user
+     */
+    @Select({"select id,username,openid,profile,state,dataCreate_LastTime,dataChange_LastTime from wechat_user where id = #{id}"})
+    WeChatUser queryByUserId(int id);
 
     /**
      * 创建用户
@@ -25,17 +34,17 @@ public interface WeChatUserMapper {
      * @return 主键id
      */
     @Insert({"insert into wechat_user(openid, state) " +
-            "values(#{openid},0)"})
+            "values(#{openid},1)"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insertWeChatUser(WeChatUser user);
 
     /**
-     * 创建用户
+     * 更新
      *
      * @param user 对象
      * @return 主键id
      */
-    @Insert({"update wechat_user set username=#{username}, profile=#{profile}, state=#{state} where id=#{id} and openid=#{openid}"})
+    @Insert({"update wechat_user set username=#{username}, profile=#{profile} where id=#{id}"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int updateWeChatUser(WeChatUser user);
 }
