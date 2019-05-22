@@ -49,7 +49,12 @@ public class WeChatUserService {
 
     private WeChatUser convertWeChatUser(RequestType requestType) {
         WeChatUser weChatUser = new WeChatUser();
-        weChatUser.setId(SecurityThreadLocal.get().getUserId());
+        try{
+            weChatUser.setId(SecurityThreadLocal.get().getUserId());
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("初次登陆没有ID");
+        }
         weChatUser.setOpenid(requestType.getOpenId());
         weChatUser.setUsername(requestType.getUsername());
         weChatUser.setProfile(requestType.getProfile());
