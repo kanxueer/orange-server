@@ -22,12 +22,11 @@ public class PartService {
     }
 
     public List<Part> queryPartByUserId() {
-        WeChatUser user = SecurityThreadLocal.get();
-        return partMapper.queryByActivityId(user.getId());
+        return partMapper.queryByUserId(SecurityThreadLocal.get().getUserId());
     }
 
-    public Part queryPartById(int activityId) {
-        return partMapper.queryById(activityId);
+    public Part queryPartById(int partId) {
+        return partMapper.queryById(partId);
     }
 
     public int insertPart(RequestType requestType) throws DaoException {
@@ -41,8 +40,7 @@ public class PartService {
 
     private Part convertPart(RequestType requestType) {
         Part part = new Part();
-        WeChatUser user = SecurityThreadLocal.get();
-        part.setUserId(user.getId());
+        part.setUserId(SecurityThreadLocal.get().getUserId());
         part.setActivityId(requestType.getActivityId());
         part.setQuantity(requestType.getPartQuantity());
         part.setShareId(requestType.getShareId());

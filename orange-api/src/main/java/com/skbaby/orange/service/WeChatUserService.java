@@ -2,8 +2,6 @@ package com.skbaby.orange.service;
 
 import com.alibaba.fastjson.JSON;
 import com.skbaby.orange.dto.RequestType;
-import com.skbaby.orange.entity.Activity;
-import com.skbaby.orange.entity.Part;
 import com.skbaby.orange.entity.WeChatUser;
 import com.skbaby.orange.exception.DaoException;
 import com.skbaby.orange.mapper.WeChatUserMapper;
@@ -11,7 +9,6 @@ import com.skbaby.orange.util.RedisUtil;
 import com.skbaby.orange.util.SecurityThreadLocal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Service
 public class WeChatUserService {
@@ -39,8 +36,6 @@ public class WeChatUserService {
         WeChatUser weChatUser = convertWeChatUser(requestType);
         weChatUserMapper.updateWeChatUser(weChatUser);
         weChatUser = weChatUserMapper.queryByUserId(weChatUser.getId());
-        //更新ThreadLocal
-        SecurityThreadLocal.set(weChatUser);
         //更新Redis
         redisUtil.remove(requestType.getToken());
         redisUtil.save(requestType.getToken(), JSON.toJSONString(weChatUser));
@@ -49,7 +44,7 @@ public class WeChatUserService {
     }
 
     public WeChatUser getWeChatUser(){
-        return SecurityThreadLocal.get();
+        return JSON.parseObject(redisUtil.get(SecurityThreadLocal.get().getToken()),WeChatUser.class);
     }
 
     private WeChatUser convertWeChatUser(RequestType requestType) {

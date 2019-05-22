@@ -2,6 +2,7 @@ package com.skbaby.orange.aspect;
 
 import com.alibaba.fastjson.JSON;
 import com.skbaby.orange.dto.ResponseType;
+import com.skbaby.orange.dto.UserTokenDto;
 import com.skbaby.orange.entity.WeChatUser;
 import com.skbaby.orange.enums.ErrorCode;
 import com.skbaby.orange.util.RedisUtil;
@@ -52,7 +53,10 @@ public class VolatileAspect {
         String result = "";
         try {
             WeChatUser user = JSON.parseObject(userInfo, WeChatUser.class);
-            SecurityThreadLocal.set(user);
+            UserTokenDto ut = new UserTokenDto();
+            ut.setUserId(user.getId());
+            ut.setToken(token);
+            SecurityThreadLocal.set(ut);
             result = pjp.proceed().toString();
         } catch (Throwable e) {
             e.printStackTrace();

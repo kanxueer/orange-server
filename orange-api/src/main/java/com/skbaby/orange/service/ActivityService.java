@@ -18,13 +18,11 @@ public class ActivityService {
     private ActivityMapper activityMapper;
 
     public Activity queryActivityById(int id) {
-        WeChatUser user = SecurityThreadLocal.get();
-        return activityMapper.queryById(id, user.getId());
+        return activityMapper.queryById(id, SecurityThreadLocal.get().getUserId());
     }
 
     public List<Activity> queryActivityByUserId() {
-        WeChatUser user = SecurityThreadLocal.get();
-        return activityMapper.queryByUserId(user.getId());
+        return activityMapper.queryByUserId(SecurityThreadLocal.get().getUserId());
     }
 
     public int insertActivity(RequestType requestType) throws DaoException {
@@ -43,8 +41,7 @@ public class ActivityService {
     }
 
     public void deleteActivity(int id) throws DaoException {
-        WeChatUser user = SecurityThreadLocal.get();
-        int rows = activityMapper.deleteActivity(id, user.getId());
+        int rows = activityMapper.deleteActivity(id, SecurityThreadLocal.get().getUserId());
         if (rows != 1){
             throw new DaoException();
         }
@@ -52,9 +49,8 @@ public class ActivityService {
 
     private Activity convertActivity(RequestType requestType) {
         Activity activity = new Activity();
-        WeChatUser user = SecurityThreadLocal.get();
         activity.setId(requestType.getActivityId());
-        activity.setUserId(user.getId());
+        activity.setUserId(SecurityThreadLocal.get().getUserId());
         activity.setTitle(requestType.getTitle());
         activity.setDescription(requestType.getDescription());
         activity.setStartTime(requestType.getStartTime());

@@ -1,18 +1,18 @@
 package com.skbaby.orange.util;
 
-import com.skbaby.orange.entity.WeChatUser;
+import com.skbaby.orange.dto.UserTokenDto;
 
 public class SecurityThreadLocal {
-    private static final ThreadLocal<WeChatUser> LOCAL = new ThreadLocal<>();
+    private static final ThreadLocal<UserTokenDto> LOCAL = new ThreadLocal<>();
 
     private SecurityThreadLocal(){
     }
 
-    public static void set(WeChatUser user){
+    public static void set(UserTokenDto user){
         LOCAL.set(user);
     }
 
-    public static WeChatUser get(){
+    public static UserTokenDto get(){
         return LOCAL.get();
     }
 

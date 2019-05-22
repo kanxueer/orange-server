@@ -22,7 +22,22 @@ public class PartController {
     private PartService partService;
 
     /**
-     * 查询PartID查询
+     * 查询ActivityID查询
+     *
+     * @param id ActivityID
+     * @return object
+     */
+    @SecurityAspect
+    @GetMapping(value = "/orange/queue/activity/{id}")
+    public String getPartByActivityId(@PathVariable("id") Integer id) {
+        ResponseType responseType = ResponseUtil.defaultResponse();
+        List<Part> part = partService.queryPartByActivityId(id);
+        responseType.setData(part);
+        return JSON.toJSONString(responseType);
+    }
+
+    /**
+     * PartID查询
      *
      * @param id id
      * @return object
@@ -31,7 +46,7 @@ public class PartController {
     @GetMapping(value = "/orange/queue/{id}")
     public String getPartByPartId(@PathVariable("id") Integer id) {
         ResponseType responseType = ResponseUtil.defaultResponse();
-        List<Part> part = partService.queryPartByActivityId(id);
+        Part part = partService.queryPartById(id);
         responseType.setData(part);
         return JSON.toJSONString(responseType);
     }
@@ -51,14 +66,14 @@ public class PartController {
     }
 
     /**
-     * 创建活动
+     * 创建排队
      *
      * @param requestType requestType
      * @return int
      */
     @SecurityAspect
     @PostMapping(value = "/orange/queue")
-    public String insertActivity(@RequestBody RequestType requestType) {
+    public String insertPart(@RequestBody RequestType requestType) {
         ResponseType responseType = ResponseUtil.defaultResponse();
         Integer partId;
         try {
