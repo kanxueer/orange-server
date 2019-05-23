@@ -15,7 +15,7 @@ public interface WeChatUserMapper {
      * @param openid openid
      * @return user
      */
-    @Select({"select id,username,openid,profile,state,dataCreate_LastTime,dataChange_LastTime from wechat_user where openid = #{openid}"})
+    @Select({"select id,username,openid,token,profile,state,dataCreate_LastTime,dataChange_LastTime from wechat_user where openid = #{openid}"})
     WeChatUser queryByOpenId(String openid);
 
     /**
@@ -33,8 +33,8 @@ public interface WeChatUserMapper {
      * @param user 对象
      * @return 主键id
      */
-    @Insert({"insert into wechat_user(openid, state) " +
-            "values(#{openid},1)"})
+    @Insert({"insert into wechat_user(openid, token, state) " +
+            "values(#{openid},#{token},1)"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insertWeChatUser(WeChatUser user);
 
@@ -47,4 +47,13 @@ public interface WeChatUserMapper {
     @Insert({"update wechat_user set username=#{username}, profile=#{profile} where id=#{id}"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int updateWeChatUser(WeChatUser user);
+
+    /**
+     * 更新token
+     * @param token
+     * @param openid
+     * @param newtoken
+     */
+    @Insert({"update wechat_user set token=#{newtoken} where openid=#{openid} and token=#{token}"})
+    void updateToken(String token, String openid, String newtoken);
 }

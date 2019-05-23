@@ -14,6 +14,7 @@ import com.skbaby.orange.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +49,23 @@ public class LoginController {
         return JSON.toJSONString(response);
     }
 
+    @PostMapping(value = "/orange/refresh")
+    public String refreshToken(@RequestBody RequestType request) {
+        String token = request.getToken();
+        String openId = request.getOpenId();
+        String newtoken = DigestUtils.md5DigestAsHex((openId + "_" + System.currentTimeMillis() + "_" + token).getBytes());
+        // update现在的token进去
+        service.updateUserToken(token, openId, newtoken);
+        WeChatUser weChatUser = service.queryWeChatUser(openId);
+        // redis里保存的用户信息不需要token
+        weChatUser.setToken(null);
+        redisUtil.save(newtoken, JSON.toJSONString(weChatUser));
+        ResponseType responseType = ResponseUtil.defaultResponse();
+        responseType.setData(newtoken);
+        return JSON.toJSONString(responseType);
+    }
+
+
     private ResponseType getOpenId(String code) {
         ResponseType responseType = ResponseUtil.defaultResponse();
         String url = URL_OPENID.replace("APPID", propertiesConfig.getAppId()).replace("SECRET", propertiesConfig.getAppSecret()).replace("JSCODE", code);
@@ -58,15 +76,23 @@ public class LoginController {
             String openId = response.getOpenid();
             String session_key = response.getSession_key();
             try {
-                // 判断用户是否存在 openID唯一
-                WeChatUser weChatUser = queryWeChatUser(openId);
-                if (weChatUser == null) {
-                    // 创建用户，只有一个openId字段
-                    weChatUser = createWeChatUser(openId);
-                }
                 // 生成Token
                 String token = DigestUtils.md5DigestAsHex((openId + "_" + System.currentTimeMillis() + "_" + session_key).getBytes());
-                // 保存到Redis里面，不设置过期时间
+                // 判断用户是否存在 openID唯一
+                WeChatUser weChatUser = service.queryWeChatUser(openId);
+
+                if (weChatUser == null) {
+                    // 创建用户
+                    weChatUser = createWeChatUser(openId, token);
+                } else {
+                    // 删除redis里面的用户之前如果存在的token
+                    redisUtil.remove(weChatUser.getToken());
+                    // update现在的token进去
+                    service.updateUserToken(weChatUser.getToken(), weChatUser.getOpenid(), token);
+                    // redis里保存的用户信息不需要token
+                    weChatUser.setToken(null);
+                }
+                // 保存到Redis里面
                 redisUtil.save(token, JSON.toJSONString(weChatUser));
 
                 HashMap<String, String> result = new HashMap<>();
@@ -87,13 +113,10 @@ public class LoginController {
         return responseType;
     }
 
-    private WeChatUser queryWeChatUser(String openId) {
-        return service.queryWeChatUser(openId);
-    }
-
-    private WeChatUser createWeChatUser(String openId) throws DaoException {
+    private WeChatUser createWeChatUser(String openId, String token) throws DaoException {
         RequestType request = new RequestType();
         request.setOpenId(openId);
+        request.setToken(token);
         return service.insertWeChatUser(request);
     }
 }

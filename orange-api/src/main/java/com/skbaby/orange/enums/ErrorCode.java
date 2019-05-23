@@ -6,8 +6,8 @@ public enum ErrorCode {
     SUCCESS(0,"成功"),
     INSERT_ERROR(1,"新增失败"),
     DELETE_ERROR(2,"删除失败"),
-    SECURITY_ERROR(3,"需要登录访问"),
-    NEED_REGIST(4,"需要注册"),
+    NOT_LOGIN(3,"用户未登录"),
+    TOKEN_INVALID(4,"token失效"),
 
 
     //微信错误

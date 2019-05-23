@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.TimeUnit;
+
 @Component
 public class RedisUtil{
 
@@ -12,8 +14,8 @@ public class RedisUtil{
 
 
 	public void save(String key, String object) {
-		// 不设置过期时间
-		redisTemplate.opsForValue().set(key, object);
+		// 半年
+		redisTemplate.opsForValue().set(key, object, 60, TimeUnit.DAYS);
 	}
 
 	public String get(String key) {

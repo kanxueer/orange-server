@@ -32,7 +32,18 @@ public class WeChatUserService {
         return weChatUserMapper.queryByOpenId(openid);
     }
 
-    public int updateWeChatUser(RequestType requestType){
+    /**
+     * 靠openID和token更新token
+     *
+     * @param token
+     * @param openid
+     * @param newtoken
+     */
+    public void updateUserToken(String token, String openid, String newtoken) {
+        weChatUserMapper.updateToken(token, openid, newtoken);
+    }
+
+    public int updateWeChatUser(RequestType requestType) {
         WeChatUser weChatUser = convertWeChatUser(requestType);
         weChatUserMapper.updateWeChatUser(weChatUser);
         weChatUser = weChatUserMapper.queryByUserId(weChatUser.getId());
@@ -43,18 +54,19 @@ public class WeChatUserService {
         return weChatUser.getId();
     }
 
-    public WeChatUser getWeChatUser(){
-        return JSON.parseObject(redisUtil.get(SecurityThreadLocal.get().getToken()),WeChatUser.class);
+    public WeChatUser getWeChatUser() {
+        return JSON.parseObject(redisUtil.get(SecurityThreadLocal.get().getToken()), WeChatUser.class);
     }
 
     private WeChatUser convertWeChatUser(RequestType requestType) {
         WeChatUser weChatUser = new WeChatUser();
-        try{
+        try {
             weChatUser.setId(SecurityThreadLocal.get().getUserId());
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("初次登陆没有ID");
         }
+        weChatUser.setToken(requestType.getToken());
         weChatUser.setOpenid(requestType.getOpenId());
         weChatUser.setUsername(requestType.getUsername());
         weChatUser.setProfile(requestType.getProfile());

@@ -35,19 +35,20 @@ public class VolatileAspect {
     public String Interceptor(ProceedingJoinPoint pjp) {
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
+        assert sra != null;
         HttpServletRequest request = sra.getRequest();
         String token = request.getHeader("token");
         if (StringUtils.isEmpty(token)){
             ResponseType response = new ResponseType();
-            response.setCode(ErrorCode.SECURITY_ERROR.getCode());
-            response.setErr_msg(ErrorCode.SECURITY_ERROR.getMsg());
+            response.setCode(ErrorCode.NOT_LOGIN.getCode());
+            response.setErr_msg(ErrorCode.NOT_LOGIN.getMsg());
             return JSON.toJSONString(response);
         }
         String userInfo = redisUtil.get(token);
         if (StringUtils.isEmpty(userInfo)){
             ResponseType response = new ResponseType();
-            response.setCode(ErrorCode.NEED_REGIST.getCode());
-            response.setErr_msg(ErrorCode.NEED_REGIST.getMsg());
+            response.setCode(ErrorCode.TOKEN_INVALID.getCode());
+            response.setErr_msg(ErrorCode.TOKEN_INVALID.getMsg());
             return JSON.toJSONString(response);
         }
         String result = "";
