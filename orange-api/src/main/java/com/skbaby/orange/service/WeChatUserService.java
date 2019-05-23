@@ -39,8 +39,8 @@ public class WeChatUserService {
      * @param openid
      * @param newtoken
      */
-    public void updateUserToken(String token, String openid, String newtoken) {
-        weChatUserMapper.updateToken(token, openid, newtoken);
+    public int updateUserToken(String token, String openid, String newtoken) {
+        return weChatUserMapper.updateToken(token, openid, newtoken);
     }
 
     public int updateWeChatUser(RequestType requestType) {

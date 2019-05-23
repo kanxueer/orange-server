@@ -55,5 +55,5 @@ public interface WeChatUserMapper {
      * @param newtoken
      */
     @Insert({"update wechat_user set token=#{newtoken} where openid=#{openid} and token=#{token}"})
-    void updateToken(String token, String openid, String newtoken);
+    int updateToken(String token, String openid, String newtoken);
 }

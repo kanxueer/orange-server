@@ -55,14 +55,20 @@ public class LoginController {
         String openId = request.getOpenId();
         String newtoken = DigestUtils.md5DigestAsHex((openId + "_" + System.currentTimeMillis() + "_" + token).getBytes());
         // update现在的token进去
-        service.updateUserToken(token, openId, newtoken);
-        WeChatUser weChatUser = service.queryWeChatUser(openId);
-        // redis里保存的用户信息不需要token
-        weChatUser.setToken(null);
-        redisUtil.save(newtoken, JSON.toJSONString(weChatUser));
-        redisUtil.remove(token);
+        int row = service.updateUserToken(token, openId, newtoken);
+
         ResponseType responseType = ResponseUtil.defaultResponse();
-        responseType.setData(newtoken);
+        if (row != 1) {
+            responseType.setCode(ErrorCode.FAILED_REFRESH.getCode());
+            responseType.setErr_msg(ErrorCode.FAILED_REFRESH.getMsg());
+        } else {
+            WeChatUser weChatUser = service.queryWeChatUser(openId);
+            // redis里保存的用户信息不需要token
+            weChatUser.setToken(null);
+            redisUtil.save(newtoken, JSON.toJSONString(weChatUser));
+            redisUtil.remove(token);
+            responseType.setData(newtoken);
+        }
         return JSON.toJSONString(responseType);
     }
 

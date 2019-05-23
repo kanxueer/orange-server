@@ -8,6 +8,7 @@ public enum ErrorCode {
     DELETE_ERROR(2,"删除失败"),
     NOT_LOGIN(3,"用户未登录"),
     TOKEN_INVALID(4,"token失效"),
+    FAILED_REFRESH(5, "刷新token失败"),
 
 
     //微信错误
