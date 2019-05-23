@@ -60,6 +60,7 @@ public class LoginController {
         // redis里保存的用户信息不需要token
         weChatUser.setToken(null);
         redisUtil.save(newtoken, JSON.toJSONString(weChatUser));
+        redisUtil.remove(token);
         ResponseType responseType = ResponseUtil.defaultResponse();
         responseType.setData(newtoken);
         return JSON.toJSONString(responseType);
