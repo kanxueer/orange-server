@@ -55,6 +55,8 @@ public class PartService {
     private Part convertPart(RequestType requestType) {
         Part part = new Part();
         part.setUserId(SecurityThreadLocal.get().getUserId());
+        part.setUserName(SecurityThreadLocal.get().getUserName());
+        part.setProfile(SecurityThreadLocal.get().getProfile());
         part.setActivityId(requestType.getActivityId());
         part.setQuantity(requestType.getPartQuantity());
         part.setShareId(requestType.getShareId());

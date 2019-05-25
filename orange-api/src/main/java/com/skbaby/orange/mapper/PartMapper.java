@@ -17,7 +17,7 @@ public interface PartMapper{
      * @param activityId ActivityID
      * @return Part
      */
-    @Select({"select id,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where activityId = #{activityId}"})
+    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where activityId = #{activityId}"})
     List<Part> queryByActivityId(int activityId);
 
     /**
@@ -25,7 +25,7 @@ public interface PartMapper{
      * @param id id
      * @return Part
      */
-    @Select({"select id,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where id = #{id}"})
+    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where id = #{id}"})
     Part queryById(int id);
 
     /**
@@ -33,7 +33,7 @@ public interface PartMapper{
      * @param userId id
      * @return Part
      */
-    @Select({"select id,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where id = #{userId}"})
+    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where id = #{userId}"})
     List<Part> queryByUserId(int userId);
 
     /**
@@ -42,8 +42,8 @@ public interface PartMapper{
      * @param part 对象
      * @return 主键id
      */
-    @Insert({"insert into part(userId,activityId,quantity,shareType,shareId) " +
-            "values(#{userId},#{activityId},#{quantity},#{shareType},#{shareId})"})
+    @Insert({"insert into part(userId,activityId,userName,profile,quantity,shareType,shareId) " +
+            "values(#{userId},#{activityId},#{userName},#{profile},#{quantity},#{shareType},#{shareId})"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int insertPart(Part part);
 

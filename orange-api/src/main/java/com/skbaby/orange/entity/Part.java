@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 public class Part {
     private int id;
     private int userId;
+    private String userName;
+    private String profile;
     private int activityId;
     private int quantity;
     private int shareType;
