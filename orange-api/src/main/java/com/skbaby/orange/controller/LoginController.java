@@ -103,8 +103,6 @@ public class LoginController {
                 redisUtil.save(token, JSON.toJSONString(weChatUser));
 
                 HashMap<String, String> result = new HashMap<>();
-                result.put("openid", openId);
-                result.put("id", weChatUser.getId() + "");
                 result.put("token", token);
                 responseType.setData(result);
             } catch (DaoException e) {
