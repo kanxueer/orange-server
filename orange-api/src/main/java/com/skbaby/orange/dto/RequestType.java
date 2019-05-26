@@ -17,7 +17,7 @@ public class RequestType {
     private Timestamp startTime;
     private Timestamp endTime;
     private String unit;
-    private String position;
+    private String location;
 
     private int partQuantity;
     private int activityQuantity;

@@ -55,7 +55,7 @@ public class ActivityService {
         activity.setStartTime(requestType.getStartTime());
         activity.setEndTime(requestType.getEndTime());
         activity.setQuantity(requestType.getActivityQuantity());
-        activity.setLocation(requestType.getPosition());
+        activity.setLocation(requestType.getLocation());
         activity.setUnit(requestType.getUnit());
         return activity;
     }
