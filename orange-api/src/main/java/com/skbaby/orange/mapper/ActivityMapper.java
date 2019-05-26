@@ -23,6 +23,13 @@ public interface ActivityMapper {
                             select = "com.skbaby.orange.mapper.PartMapper.queryByActivityId",
                             fetchType = FetchType.LAZY
                     )
+            ),
+            @Result(property = "userId", column = "userId"),
+            @Result(property = "userInfo", column = "userId",
+                    one = @One(
+                            select = "com.skbaby.orange.mapper.WeChatUserMapper.queryUserNameAndProfile",
+                            fetchType = FetchType.LAZY
+                    )
             )
     })
     List<Activity> queryByUserId(int userId);
@@ -42,6 +49,7 @@ public interface ActivityMapper {
                             fetchType = FetchType.LAZY
                     )
             ),
+            @Result(property = "userId", column = "userId"),
             @Result(property = "userInfo", column = "userId",
                     one = @One(
                             select = "com.skbaby.orange.mapper.WeChatUserMapper.queryUserNameAndProfile",
