@@ -41,6 +41,12 @@ public interface ActivityMapper {
                             select = "com.skbaby.orange.mapper.PartMapper.queryByActivityId",
                             fetchType = FetchType.LAZY
                     )
+            ),
+            @Result(property = "userInfo", column = "userId",
+                    one = @One(
+                            select = "com.skbaby.orange.mapper.WeChatUserMapper.queryUserNameAndProfile",
+                            fetchType = FetchType.LAZY
+                    )
             )
     })
     Activity queryById(int id, int userId);

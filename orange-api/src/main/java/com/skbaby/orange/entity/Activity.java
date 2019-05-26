@@ -21,4 +21,5 @@ public class Activity {
     private Timestamp dataCreate_LastTime;
     private Timestamp dataChange_LastTime;
     private List<Part> parts;
+    private WeChatUser userInfo;
 }

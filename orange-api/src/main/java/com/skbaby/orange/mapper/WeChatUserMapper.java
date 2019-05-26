@@ -24,6 +24,15 @@ public interface WeChatUserMapper {
     @Select({"select id,username,openid,profile,state,dataCreate_LastTime,dataChange_LastTime from wechat_user where id = #{id} and state=1"})
     WeChatUser queryByUserId(int id);
 
+
+    /**
+     * 通过userId查询用户
+     *
+     * @param id id
+     * @return user
+     */
+    @Select({"select username,profile from wechat_user where id = #{id} and state=1"})
+    WeChatUser queryUserNameAndProfile(int id);
     /**
      * 创建用户
      *
