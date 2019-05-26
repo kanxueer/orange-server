@@ -21,7 +21,7 @@ public interface WeChatUserMapper {
      * @param id id
      * @return user
      */
-    @Select({"select id,username,openid,profile,state,dataCreate_LastTime,dataChange_LastTime from wechat_user where id = #{id}  and state=1"})
+    @Select({"select id,username,openid,profile,state,dataCreate_LastTime,dataChange_LastTime from wechat_user where id = #{id} and state=1"})
     WeChatUser queryByUserId(int id);
 
     /**
