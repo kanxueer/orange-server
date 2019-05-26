@@ -37,6 +37,21 @@ public class PartController {
     }
 
     /**
+     * 根据ActivityID和userID查询
+     *
+     * @param id ActivityID
+     * @return object
+     */
+    @SecurityAspect
+    @GetMapping(value = "/orange/queue/activity_with_user/{id}")
+    public String getPartByActivityIdAndUserID(@PathVariable("id") Integer id) {
+        ResponseType responseType = ResponseUtil.defaultResponse();
+        List<Part> part = partService.queryPartByActivityIdAndUserId(id);
+        responseType.setData(part);
+        return JSON.toJSONString(responseType);
+    }
+
+    /**
      * PartID查询
      *
      * @param id id

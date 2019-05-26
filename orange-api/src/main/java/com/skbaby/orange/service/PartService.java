@@ -22,6 +22,11 @@ public class PartService {
         return partMapper.queryByActivityId(activityId);
     }
 
+    public List<Part> queryPartByActivityIdAndUserId(int activityId) {
+        return partMapper.queryByActivityIdAndUserId(activityId,SecurityThreadLocal.get().getUserId());
+    }
+
+
     public List<Part> queryPartByUserId() {
         return partMapper.queryByUserId(SecurityThreadLocal.get().getUserId());
     }

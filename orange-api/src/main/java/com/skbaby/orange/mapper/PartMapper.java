@@ -16,6 +16,14 @@ public interface PartMapper{
     @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where activityId = #{activityId}  and state=1"})
     List<Part> queryByActivityId(int activityId);
 
+
+    /**
+     * 通过活动ID和用户ID查询
+     * @param activityId ActivityID
+     * @return Part
+     */
+    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where activityId = #{activityId} and userId = #{userId} and state=1"})
+    List<Part> queryByActivityIdAndUserId(int activityId, int userId);
     /**
      * 通过ID查询排队
      * @param id id
@@ -29,7 +37,7 @@ public interface PartMapper{
      * @param userId id
      * @return Part
      */
-    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where id = #{userId} and state=1"})
+    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where userId = #{userId} and state=1"})
     List<Part> queryByUserId(int userId);
 
     /**
