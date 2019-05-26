@@ -33,7 +33,7 @@ public interface ActivityMapper {
      * @param id activity id
      * @return Activity
      */
-    @Select({"select id,userId,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where id = #{id} and userId= #{userId} and state=1"})
+    @Select({"select id,userId,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where id = #{id} and state=1"})
     @Results({
             @Result(property = "id", column = "id"),
             @Result(column = "id", property = "parts",
