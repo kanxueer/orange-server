@@ -1,11 +1,7 @@
 package com.skbaby.orange.mapper;
 
-import com.skbaby.orange.entity.Activity;
 import com.skbaby.orange.entity.Part;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -17,7 +13,7 @@ public interface PartMapper{
      * @param activityId ActivityID
      * @return Part
      */
-    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where activityId = #{activityId}"})
+    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where activityId = #{activityId}  and state=1"})
     List<Part> queryByActivityId(int activityId);
 
     /**
@@ -25,7 +21,7 @@ public interface PartMapper{
      * @param id id
      * @return Part
      */
-    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where id = #{id}"})
+    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where id = #{id} and state=1"})
     Part queryById(int id);
 
     /**
@@ -33,7 +29,7 @@ public interface PartMapper{
      * @param userId id
      * @return Part
      */
-    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where id = #{userId}"})
+    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where id = #{userId} and state=1"})
     List<Part> queryByUserId(int userId);
 
     /**
@@ -53,7 +49,7 @@ public interface PartMapper{
      * @param id id
      * @return 主键id
      */
-    @Insert({"update part set state= 0 where id=#{id}"})
+    @Update({"update part set state= 0 where id=#{id}"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int deletePart(int id);
 
@@ -63,7 +59,7 @@ public interface PartMapper{
      * @param part 对象
      * @return 主键id
      */
-    @Insert({"update part set quantity=#{quantity} where id=#{id}"})
+    @Update({"update part set quantity=#{quantity} where id=#{id}"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int updatePart(Part part);
 }

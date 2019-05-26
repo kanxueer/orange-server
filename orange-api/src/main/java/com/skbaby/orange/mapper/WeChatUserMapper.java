@@ -1,10 +1,7 @@
 package com.skbaby.orange.mapper;
 
 import com.skbaby.orange.entity.WeChatUser;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface WeChatUserMapper {
@@ -15,7 +12,7 @@ public interface WeChatUserMapper {
      * @param openid openid
      * @return user
      */
-    @Select({"select id,username,openid,token,profile,state,dataCreate_LastTime,dataChange_LastTime from wechat_user where openid = #{openid}"})
+    @Select({"select id,username,openid,token,profile,state,dataCreate_LastTime,dataChange_LastTime from wechat_user where openid = #{openid}  and state=1"})
     WeChatUser queryByOpenId(String openid);
 
     /**
@@ -24,7 +21,7 @@ public interface WeChatUserMapper {
      * @param id id
      * @return user
      */
-    @Select({"select id,username,openid,profile,state,dataCreate_LastTime,dataChange_LastTime from wechat_user where id = #{id}"})
+    @Select({"select id,username,openid,profile,state,dataCreate_LastTime,dataChange_LastTime from wechat_user where id = #{id}  and state=1"})
     WeChatUser queryByUserId(int id);
 
     /**
@@ -44,7 +41,7 @@ public interface WeChatUserMapper {
      * @param user 对象
      * @return 主键id
      */
-    @Insert({"update wechat_user set username=#{username}, profile=#{profile} where id=#{id}"})
+    @Update({"update wechat_user set username=#{username}, profile=#{profile} where id=#{id}"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int updateWeChatUser(WeChatUser user);
 
@@ -54,6 +51,6 @@ public interface WeChatUserMapper {
      * @param openid
      * @param newtoken
      */
-    @Insert({"update wechat_user set token=#{newtoken} where openid=#{openid} and token=#{token}"})
+    @Update({"update wechat_user set token=#{newtoken} where openid=#{openid} and token=#{token}"})
     int updateToken(String token, String openid, String newtoken);
 }
