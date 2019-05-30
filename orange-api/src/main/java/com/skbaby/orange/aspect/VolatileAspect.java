@@ -57,7 +57,7 @@ public class VolatileAspect {
             UserTokenDto ut = new UserTokenDto();
             ut.setUserId(user.getUserId());
             ut.setToken(token);
-            ut.setUserName(user.getUsername());
+            ut.setUsername(user.getUsername());
             ut.setProfile(user.getProfile());
             SecurityThreadLocal.set(ut);
             result = pjp.proceed().toString();
