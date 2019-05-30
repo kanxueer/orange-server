@@ -1,7 +1,7 @@
 package com.skbaby.orange.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.skbaby.orange.controller.util.ResponseUtil;
+import com.skbaby.orange.util.ResponseUtil;
 import com.skbaby.orange.dto.RequestType;
 import com.skbaby.orange.dto.ResponseType;
 import com.skbaby.orange.dto.WeChatOpenIDResponse;
@@ -12,9 +12,7 @@ import com.skbaby.orange.properties.PropertiesConfig;
 import com.skbaby.orange.service.WeChatUserService;
 import com.skbaby.orange.util.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.DigestUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,38 +47,15 @@ public class LoginController {
         return JSON.toJSONString(response);
     }
 
-    @PostMapping(value = "/orange/refresh")
-    public String refreshToken(@RequestBody RequestType request) {
-        String token = request.getToken();
-        String openId = request.getOpenId();
-        String newtoken = DigestUtils.md5DigestAsHex((openId + "_" + System.currentTimeMillis() + "_" + token).getBytes());
-        // update现在的token进去
-        int row = service.updateUserToken(token, openId, newtoken);
-
-        ResponseType responseType = ResponseUtil.defaultResponse();
-        if (row != 1) {
-            responseType.setCode(ErrorCode.FAILED_REFRESH.getCode());
-            responseType.setErr_msg(ErrorCode.FAILED_REFRESH.getMsg());
-        } else {
-            WeChatUser weChatUser = service.queryWeChatUser(openId);
-            // redis里保存的用户信息不需要token
-            weChatUser.setToken(null);
-            redisUtil.save(newtoken, JSON.toJSONString(weChatUser));
-            redisUtil.remove(token);
-            responseType.setData(newtoken);
-        }
-        return JSON.toJSONString(responseType);
-    }
-
 
     private ResponseType getOpenId(String code) {
         ResponseType responseType = ResponseUtil.defaultResponse();
         String url = URL_OPENID.replace("APPID", propertiesConfig.getAppId()).replace("SECRET", propertiesConfig.getAppSecret()).replace("JSCODE", code);
         String s = restTemplate.getForObject(url, String.class);
         WeChatOpenIDResponse response = JSON.parseObject(s, WeChatOpenIDResponse.class);
-        if (response != null && response.getOpenid() != null && response.getSession_key() != null) {
+        if (response != null && response.getOpenId() != null && response.getSession_key() != null) {
             //成功
-            String openId = response.getOpenid();
+            String openId = response.getOpenId();
             String session_key = response.getSession_key();
             try {
                 // 生成Token
@@ -95,7 +70,7 @@ public class LoginController {
                     // 删除redis里面的用户之前如果存在的token
                     redisUtil.remove(weChatUser.getToken());
                     // update现在的token进去
-                    service.updateUserToken(weChatUser.getToken(), weChatUser.getOpenid(), token);
+                    service.updateUserToken(weChatUser.getToken(), weChatUser.getOpenId(), token);
                     // redis里保存的用户信息不需要token
                     weChatUser.setToken(null);
                 }
@@ -103,8 +78,6 @@ public class LoginController {
                 redisUtil.save(token, JSON.toJSONString(weChatUser));
 
                 HashMap<String, String> result = new HashMap<>();
-                result.put("openid", openId);
-                result.put("id", weChatUser.getId() + "");
                 result.put("token", token);
                 responseType.setData(result);
             } catch (DaoException e) {

@@ -13,7 +13,7 @@ public interface PartMapper{
      * @param activityId ActivityID
      * @return Part
      */
-    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where activityId = #{activityId}  and state=1"})
+    @Select({"select partId,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where activityId = #{activityId} and state=1"})
     List<Part> queryByActivityId(int activityId);
 
 
@@ -22,22 +22,23 @@ public interface PartMapper{
      * @param activityId ActivityID
      * @return Part
      */
-    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where activityId = #{activityId} and userId = #{userId} and state=1"})
+    @Select({"select partId,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where activityId = #{activityId} and userId = #{userId} and state=1"})
     List<Part> queryByActivityIdAndUserId(int activityId, int userId);
+
     /**
      * 通过ID查询排队
-     * @param id id
+     * @param partId partId
      * @return Part
      */
-    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where id = #{id} and state=1"})
-    Part queryById(int id);
+    @Select({"select partId,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where partId = #{partId} and state=1"})
+    Part queryById(int partId);
 
     /**
      * 通过UserID查询排队
      * @param userId id
      * @return Part
      */
-    @Select({"select id,userId,userName,profile,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where userId = #{userId} and state=1"})
+    @Select({"select partId,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where userId = #{userId} and state=1"})
     List<Part> queryByUserId(int userId);
 
     /**
@@ -48,18 +49,18 @@ public interface PartMapper{
      */
     @Insert({"insert into part(userId,activityId,userName,profile,quantity,shareType,shareId) " +
             "values(#{userId},#{activityId},#{userName},#{profile},#{quantity},#{shareType},#{shareId})"})
-    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    @Options(useGeneratedKeys = true, keyProperty = "partId", keyColumn = "partId")
     int insertPart(Part part);
 
     /**
      * 删除
      *
-     * @param id id
+     * @param partId partId
      * @return 主键id
      */
-    @Update({"update part set state= 0 where id=#{id}"})
-    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    int deletePart(int id);
+    @Delete({"update part set state= 0 where id=#{partId}"})
+    @Options(useGeneratedKeys = true, keyProperty = "partId", keyColumn = "partId")
+    int deletePart(int partId);
 
     /**
      * 更新Part对象
@@ -67,7 +68,7 @@ public interface PartMapper{
      * @param part 对象
      * @return 主键id
      */
-    @Update({"update part set quantity=#{quantity} where id=#{id}"})
-    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    int updatePart(Part part);
+    @Update({"update part set quantity=#{quantity} where partId=#{partId}"})
+    @Options(useGeneratedKeys = true, keyProperty = "partId", keyColumn = "partId")
+    void updatePart(Part part);
 }

@@ -15,10 +15,10 @@ public interface ActivityMapper {
      * @param userId userId
      * @return Activity
      */
-    @Select({"select ID,userId,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where userId= #{userId} and state=1"})
+    @Select({"select activityId,userId,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where userId= #{userId}"})
     @Results({
-            @Result(property = "id", column = "id"),
-            @Result(column = "id", property = "parts",
+            @Result(property = "activityId", column = "activityId"),
+            @Result(column = "partId", property = "parts",
                     many = @Many(
                             select = "com.skbaby.orange.mapper.PartMapper.queryByActivityId",
                             fetchType = FetchType.LAZY
@@ -37,13 +37,13 @@ public interface ActivityMapper {
     /**
      * 查询活动
      *
-     * @param id activity id
+     * @param activityId activity id
      * @return Activity
      */
-    @Select({"select id,userId,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where id = #{id} and state=1"})
+    @Select({"select activityId,userId,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where activityId = #{activityId}"})
     @Results({
-            @Result(property = "id", column = "id"),
-            @Result(column = "id", property = "parts",
+            @Result(property = "activityId", column = "activityId"),
+            @Result(column = "partId", property = "parts",
                     many = @Many(
                             select = "com.skbaby.orange.mapper.PartMapper.queryByActivityId",
                             fetchType = FetchType.LAZY
@@ -57,7 +57,7 @@ public interface ActivityMapper {
                     )
             )
     })
-    Activity queryById(int id, int userId);
+    Activity queryById(int activityId, int userId);
 
     /**
      * 新增Activity对象
@@ -67,7 +67,7 @@ public interface ActivityMapper {
      */
     @Insert({"insert into activity(userId,title,description,startTime,endTime,unit,location,quantity)" +
             "values(#{userId},#{title},#{description},#{startTime, jdbcType=TIMESTAMP},#{endTime, jdbcType=TIMESTAMP},#{unit},#{location},#{quantity})"})
-    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    @Options(useGeneratedKeys = true, keyProperty = "activityId", keyColumn = "activityId")
     int insertActivity(Activity activity);
 
     /**
@@ -77,19 +77,25 @@ public interface ActivityMapper {
      * @return 主键id
      */
     @Update({"update activity set title=#{title},description=#{description},startTime=#{startTime, jdbcType=TIMESTAMP},endTime=#{endTime, jdbcType=TIMESTAMP}," +
-            "unit=#{unit},location=#{location},quantity=#{quantity} where id=#{id} and userId=#{userId}"})
-    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    int updateActivity(Activity activity);
+            "unit=#{unit},location=#{location},quantity=#{quantity} where activityId=#{activityId} and userId=#{userId}"})
+    void updateActivity(Activity activity);
 
 
     /**
      * 删除Activity对象
      *
-     * @param id id
+     * @param activityId activityId
      * @return 主键id
      */
-    @Update({"update activity set state= 0 where id=#{id}"})
-    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    int deleteActivity(int id);
+    @Update({"update activity set state= 0 where activityId=#{activityId}"})
+    int deleteActivity(int activityId);
 
+    /**
+     * 关闭Activity活动
+     *
+     * @param activityId activityId
+     * @return 主键id
+     */
+    @Update({"update activity set state = 2 where activityId=#{activityId}"})
+    int closeActivity(int activityId);
 }

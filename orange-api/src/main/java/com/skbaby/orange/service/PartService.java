@@ -1,9 +1,7 @@
 package com.skbaby.orange.service;
 
 import com.skbaby.orange.dto.RequestType;
-import com.skbaby.orange.entity.Activity;
 import com.skbaby.orange.entity.Part;
-import com.skbaby.orange.entity.WeChatUser;
 import com.skbaby.orange.exception.DaoException;
 import com.skbaby.orange.mapper.PartMapper;
 import com.skbaby.orange.util.SecurityThreadLocal;
@@ -41,27 +39,25 @@ public class PartService {
         if (rows != 1) {
             throw new DaoException();
         }
-        return part.getId();
+        return part.getPartId();
     }
 
-    public void deletePart(int id) throws DaoException {
-        int rows = partMapper.deletePart(id);
+    public void deletePart(int partId) throws DaoException {
+        int rows = partMapper.deletePart(partId);
         if (rows != 1){
             throw new DaoException();
         }
     }
 
-    public int updatePart(RequestType requestType) {
+    public void updatePart(RequestType requestType) {
         Part part = convertPart(requestType);
         partMapper.updatePart(part);
-        return part.getId();
     }
 
     private Part convertPart(RequestType requestType) {
         Part part = new Part();
+        part.setPartId(requestType.getPartId());
         part.setUserId(SecurityThreadLocal.get().getUserId());
-        part.setUserName(SecurityThreadLocal.get().getUserName());
-        part.setProfile(SecurityThreadLocal.get().getProfile());
         part.setActivityId(requestType.getActivityId());
         part.setQuantity(requestType.getPartQuantity());
         part.setShareId(requestType.getShareId());

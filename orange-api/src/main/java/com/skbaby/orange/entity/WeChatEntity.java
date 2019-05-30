@@ -7,7 +7,7 @@ public class WeChatEntity {
     /**
      * 普通用户的标识，对当前开发者帐号唯一
      */
-    private String openid;
+    private String openId;
     /**
      * 普通用户昵称
      */

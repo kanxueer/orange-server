@@ -16,8 +16,8 @@ public class ActivityService {
     @Autowired
     private ActivityMapper activityMapper;
 
-    public Activity queryActivityById(int id) {
-        return activityMapper.queryById(id, SecurityThreadLocal.get().getUserId());
+    public Activity queryActivityById(int activityId) {
+        return activityMapper.queryById(activityId, SecurityThreadLocal.get().getUserId());
     }
 
     public List<Activity> queryActivityByUserId() {
@@ -30,17 +30,23 @@ public class ActivityService {
         if (rows != 1) {
             throw new DaoException();
         }
-        return activity.getId();
+        return activity.getActivityId();
     }
 
-    public int updateActivity(RequestType requestType) {
+    public void updateActivity(RequestType requestType) {
         Activity activity = convertActivity(requestType);
         activityMapper.updateActivity(activity);
-        return activity.getId();
     }
 
-    public void deleteActivity(int id) throws DaoException {
-        int rows = activityMapper.deleteActivity(id);
+    public void deleteActivity(int activityId) throws DaoException {
+        int rows = activityMapper.deleteActivity(activityId);
+        if (rows != 1){
+            throw new DaoException();
+        }
+    }
+
+    public void closeActivity(int activityId) throws DaoException {
+        int rows = activityMapper.closeActivity(activityId);
         if (rows != 1){
             throw new DaoException();
         }
@@ -48,7 +54,7 @@ public class ActivityService {
 
     private Activity convertActivity(RequestType requestType) {
         Activity activity = new Activity();
-        activity.setId(requestType.getActivityId());
+        activity.setActivityId(requestType.getActivityId());
         activity.setUserId(SecurityThreadLocal.get().getUserId());
         activity.setTitle(requestType.getTitle());
         activity.setDescription(requestType.getDescription());

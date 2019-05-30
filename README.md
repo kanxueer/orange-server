@@ -115,7 +115,7 @@ res:
 #### 3、删除活动
 
 ```
-path: /orange/activity/{id}
+path: /orange/activity/{activityId}
 method: delete
 res:
 {
@@ -127,7 +127,7 @@ res:
 #### 4、通过活动ID获取活动信息
 
 ```
-path: /orange/activity/{id}
+path: /orange/activity/{activityId}
 method: get
 res:
 {
@@ -151,8 +151,11 @@ res:
     err_msg: '',
 }
 
+```
+
 P.S:
 
+```
 Part{
     int partId;
     int userId;
@@ -202,8 +205,16 @@ res:
     err_msg: '',
 }
 ```
-
-
+#### 6、结束活动
+```
+path: /orange/activity/close/{activityId}
+method: post
+res:
+{
+    code: 0,
+    err_msg: '',
+}
+```
 
 ### 报名
 
@@ -232,7 +243,7 @@ res:
 #### 2、删除排队
 
 ```
-path: /orange/queue/{id}
+path: /orange/queue/{partId}
 method: delete
 body:
 {

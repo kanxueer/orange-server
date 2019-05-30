@@ -55,7 +55,7 @@ public class VolatileAspect {
         try {
             WeChatUser user = JSON.parseObject(userInfo, WeChatUser.class);
             UserTokenDto ut = new UserTokenDto();
-            ut.setUserId(user.getId());
+            ut.setUserId(user.getUserId());
             ut.setToken(token);
             ut.setUserName(user.getUsername());
             ut.setProfile(user.getProfile());

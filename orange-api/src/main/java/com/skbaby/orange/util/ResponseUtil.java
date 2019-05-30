@@ -1,4 +1,4 @@
-package com.skbaby.orange.controller.util;
+package com.skbaby.orange.util;
 
 import com.skbaby.orange.dto.ResponseType;
 import com.skbaby.orange.enums.ErrorCode;

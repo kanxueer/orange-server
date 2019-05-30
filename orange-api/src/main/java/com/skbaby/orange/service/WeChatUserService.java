@@ -28,30 +28,30 @@ public class WeChatUserService {
         return weChatUser;
     }
 
-    public WeChatUser queryWeChatUser(String openid) {
-        return weChatUserMapper.queryByOpenId(openid);
+    public WeChatUser queryWeChatUser(String openId) {
+        return weChatUserMapper.queryByOpenId(openId);
     }
 
     /**
      * 靠openID和token更新token
      *
      * @param token
-     * @param openid
+     * @param openId
      * @param newtoken
      */
-    public int updateUserToken(String token, String openid, String newtoken) {
-        return weChatUserMapper.updateToken(token, openid, newtoken);
+    public void updateUserToken(String token, String openId, String newtoken) {
+        weChatUserMapper.updateToken(token, openId, newtoken);
     }
 
     public int updateWeChatUser(RequestType requestType) {
         WeChatUser weChatUser = convertWeChatUser(requestType);
         weChatUserMapper.updateWeChatUser(weChatUser);
-        weChatUser = weChatUserMapper.queryByUserId(weChatUser.getId());
+        weChatUser = weChatUserMapper.queryByUserId(weChatUser.getUserId());
         //更新Redis
         redisUtil.remove(SecurityThreadLocal.get().getToken());
         redisUtil.save(SecurityThreadLocal.get().getToken(), JSON.toJSONString(weChatUser));
 
-        return weChatUser.getId();
+        return weChatUser.getUserId();
     }
 
     public WeChatUser getWeChatUser() {
@@ -61,13 +61,13 @@ public class WeChatUserService {
     private WeChatUser convertWeChatUser(RequestType requestType) {
         WeChatUser weChatUser = new WeChatUser();
         try {
-            weChatUser.setId(SecurityThreadLocal.get().getUserId());
+            weChatUser.setUserId(SecurityThreadLocal.get().getUserId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("初次登陆没有ID");
         }
         weChatUser.setToken(requestType.getToken());
-        weChatUser.setOpenid(requestType.getOpenId());
+        weChatUser.setOpenId(requestType.getOpenId());
         weChatUser.setUsername(requestType.getUsername());
         weChatUser.setProfile(requestType.getProfile());
         return weChatUser;

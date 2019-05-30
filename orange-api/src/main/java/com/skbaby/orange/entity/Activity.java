@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 public class Activity {
-    private int id;
+    private int activityId;
     private int userId;
     private String title;
     private String description;

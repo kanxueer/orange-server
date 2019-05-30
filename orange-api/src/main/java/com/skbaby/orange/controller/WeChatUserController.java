@@ -2,7 +2,7 @@ package com.skbaby.orange.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.skbaby.orange.aspect.SecurityAspect;
-import com.skbaby.orange.controller.util.ResponseUtil;
+import com.skbaby.orange.util.ResponseUtil;
 import com.skbaby.orange.dto.RequestType;
 import com.skbaby.orange.dto.ResponseType;
 import com.skbaby.orange.entity.WeChatUser;
@@ -34,7 +34,7 @@ public class WeChatUserController {
 
         int userId = userService.updateWeChatUser(requestType);
         HashMap<String, Integer> data = new HashMap<>();
-        data.put("id", userId);
+        data.put("userId", userId);
         responseType.setData(data);
         return JSON.toJSONString(responseType);
     }
@@ -48,9 +48,7 @@ public class WeChatUserController {
     public String getWeChatUser(){
         ResponseType responseType = ResponseUtil.defaultResponse();
         WeChatUser user = userService.getWeChatUser();
-        HashMap<String, WeChatUser> data = new HashMap<>();
-        data.put("user", user);
-        responseType.setData(data);
+        responseType.setData(user);
         return JSON.toJSONString(responseType);
     }
 }

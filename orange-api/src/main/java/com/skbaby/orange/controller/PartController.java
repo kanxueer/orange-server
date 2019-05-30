@@ -2,7 +2,7 @@ package com.skbaby.orange.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.skbaby.orange.aspect.SecurityAspect;
-import com.skbaby.orange.controller.util.ResponseUtil;
+import com.skbaby.orange.util.ResponseUtil;
 import com.skbaby.orange.dto.RequestType;
 import com.skbaby.orange.dto.ResponseType;
 import com.skbaby.orange.entity.Part;
@@ -22,16 +22,16 @@ public class PartController {
     private PartService partService;
 
     /**
-     * 查询ActivityID查询
+     * 通过ActivityID查询
      *
-     * @param id ActivityID
+     * @param activityId ActivityID
      * @return object
      */
     @SecurityAspect
-    @GetMapping(value = "/orange/queue/activity/{id}")
-    public String getPartByActivityId(@PathVariable("id") Integer id) {
+    @GetMapping(value = "/orange/queue/activity/{activityId}")
+    public String getPartByActivityId(@PathVariable("activityId") Integer activityId) {
         ResponseType responseType = ResponseUtil.defaultResponse();
-        List<Part> part = partService.queryPartByActivityId(id);
+        List<Part> part = partService.queryPartByActivityId(activityId);
         responseType.setData(part);
         return JSON.toJSONString(responseType);
     }
@@ -39,14 +39,14 @@ public class PartController {
     /**
      * 根据ActivityID和userID查询
      *
-     * @param id ActivityID
+     * @param activityId ActivityID
      * @return object
      */
     @SecurityAspect
-    @GetMapping(value = "/orange/queue/activity_with_user/{id}")
-    public String getPartByActivityIdAndUserID(@PathVariable("id") Integer id) {
+    @GetMapping(value = "/orange/queue/activity_with_user/{activityId}")
+    public String getPartByActivityIdAndUserID(@PathVariable("activityId") Integer activityId) {
         ResponseType responseType = ResponseUtil.defaultResponse();
-        List<Part> part = partService.queryPartByActivityIdAndUserId(id);
+        List<Part> part = partService.queryPartByActivityIdAndUserId(activityId);
         responseType.setData(part);
         return JSON.toJSONString(responseType);
     }
@@ -54,14 +54,14 @@ public class PartController {
     /**
      * PartID查询
      *
-     * @param id id
+     * @param partId partId
      * @return object
      */
     @SecurityAspect
-    @GetMapping(value = "/orange/queue/{id}")
-    public String getPartByPartId(@PathVariable("id") Integer id) {
+    @GetMapping(value = "/orange/queue/{partId}")
+    public String getPartByPartId(@PathVariable("partId") Integer partId) {
         ResponseType responseType = ResponseUtil.defaultResponse();
-        Part part = partService.queryPartById(id);
+        Part part = partService.queryPartById(partId);
         responseType.setData(part);
         return JSON.toJSONString(responseType);
     }
@@ -94,7 +94,7 @@ public class PartController {
         try {
             partId = partService.insertPart(requestType);
             HashMap<String, Integer> data = new HashMap<>();
-            data.put("id", partId);
+            data.put("partId", partId);
             responseType.setData(data);
         } catch (DaoException e) {
             responseType.setCode(ErrorCode.INSERT_ERROR.getCode());
@@ -130,12 +130,7 @@ public class PartController {
     @PutMapping(value = "/orange/queue")
     public String updatePart(@RequestBody RequestType requestType) {
         ResponseType responseType = ResponseUtil.defaultResponse();
-
-        int part = partService.updatePart(requestType);
-        HashMap<String, Integer> data = new HashMap<>();
-        data.put("id", part);
-        responseType.setData(data);
-
+        partService.updatePart(requestType);
         return JSON.toJSONString(responseType);
     }
 }
