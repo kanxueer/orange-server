@@ -30,6 +30,6 @@ public class ActivityServiceTest {
         Activity activity = new Activity();
         activity.setTitle("组团开车");
         activityMapper.insertActivity(activity);
-        System.out.println(activity.getId());
+        System.out.println(activity.getActivityId());
     }
 }
