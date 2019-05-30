@@ -15,4 +15,5 @@ public class Part {
     private int state;
     private Timestamp dataCreate_LastTime;
     private Timestamp dataChange_LastTime;
+    private WeChatUser userInfo;
 }

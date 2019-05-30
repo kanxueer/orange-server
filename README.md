@@ -48,7 +48,7 @@ res:
 
 ```
 path: /orange/user
-method: put
+method: post
 body:
 {
     String username;

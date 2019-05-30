@@ -2,6 +2,7 @@ package com.skbaby.orange.mapper;
 
 import com.skbaby.orange.entity.Part;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
 
@@ -14,6 +15,16 @@ public interface PartMapper{
      * @return Part
      */
     @Select({"select partId,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where activityId = #{activityId} and state=1"})
+    @Results({
+            @Result(property = "partId", column = "partId"),
+            @Result(property = "userId", column = "userId"),
+            @Result(property = "userInfo", column = "userId",
+                    one = @One(
+                            select = "com.skbaby.orange.mapper.WeChatUserMapper.queryUserNameAndProfile",
+                            fetchType = FetchType.LAZY
+                    )
+            )
+    })
     List<Part> queryByActivityId(int activityId);
 
 
@@ -23,6 +34,16 @@ public interface PartMapper{
      * @return Part
      */
     @Select({"select partId,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where activityId = #{activityId} and userId = #{userId} and state=1"})
+    @Results({
+            @Result(property = "partId", column = "partId"),
+            @Result(property = "userId", column = "userId"),
+            @Result(property = "userInfo", column = "userId",
+                    one = @One(
+                            select = "com.skbaby.orange.mapper.WeChatUserMapper.queryUserNameAndProfile",
+                            fetchType = FetchType.LAZY
+                    )
+            )
+    })
     List<Part> queryByActivityIdAndUserId(int activityId, int userId);
 
     /**
@@ -31,6 +52,16 @@ public interface PartMapper{
      * @return Part
      */
     @Select({"select partId,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where partId = #{partId} and state=1"})
+    @Results({
+            @Result(property = "partId", column = "partId"),
+            @Result(property = "userId", column = "userId"),
+            @Result(property = "userInfo", column = "userId",
+                    one = @One(
+                            select = "com.skbaby.orange.mapper.WeChatUserMapper.queryUserNameAndProfile",
+                            fetchType = FetchType.LAZY
+                    )
+            )
+    })
     Part queryById(int partId);
 
     /**
@@ -39,6 +70,16 @@ public interface PartMapper{
      * @return Part
      */
     @Select({"select partId,userId,activityId,quantity,shareType,shareId,state,dataCreate_LastTime,dataChange_LastTime from part where userId = #{userId} and state=1"})
+    @Results({
+            @Result(property = "partId", column = "partId"),
+            @Result(property = "userId", column = "userId"),
+            @Result(property = "userInfo", column = "userId",
+                    one = @One(
+                            select = "com.skbaby.orange.mapper.WeChatUserMapper.queryUserNameAndProfile",
+                            fetchType = FetchType.LAZY
+                    )
+            )
+    })
     List<Part> queryByUserId(int userId);
 
     /**
