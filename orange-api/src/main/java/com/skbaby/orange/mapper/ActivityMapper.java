@@ -18,7 +18,7 @@ public interface ActivityMapper {
     @Select({"select activityId,userId,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where userId= #{userId}"})
     @Results({
             @Result(property = "activityId", column = "activityId"),
-            @Result(column = "partId", property = "parts",
+            @Result(column = "activityId", property = "parts",
                     many = @Many(
                             select = "com.skbaby.orange.mapper.PartMapper.queryByActivityId",
                             fetchType = FetchType.LAZY
