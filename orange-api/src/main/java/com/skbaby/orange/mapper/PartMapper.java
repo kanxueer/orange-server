@@ -88,7 +88,7 @@ public interface PartMapper{
      * @param part 对象
      * @return 主键id
      */
-    @Insert({"insert into part(userId,activityId,username,profile,quantity,shareType,shareId) " +
+    @Insert({"insert into part(userId,activityId,quantity,shareType,shareId) " +
             "values(#{userId},#{activityId},#{username},#{profile},#{quantity},#{shareType},#{shareId})"})
     @Options(useGeneratedKeys = true, keyProperty = "partId", keyColumn = "partId")
     int insertPart(Part part);
