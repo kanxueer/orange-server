@@ -6,6 +6,6 @@ import lombok.Data;
 public class UserTokenDto {
     private int userId;
     private String token;
-    private String userName;
+    private String username;
     private String profile;
 }
