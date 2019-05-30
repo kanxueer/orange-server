@@ -89,7 +89,7 @@ public interface PartMapper{
      * @return 主键id
      */
     @Insert({"insert into part(userId,activityId,quantity,shareType,shareId) " +
-            "values(#{userId},#{activityId},#{username},#{profile},#{quantity},#{shareType},#{shareId})"})
+            "values(#{userId},#{activityId},#{quantity},#{shareType},#{shareId})"})
     @Options(useGeneratedKeys = true, keyProperty = "partId", keyColumn = "partId")
     int insertPart(Part part);
 
