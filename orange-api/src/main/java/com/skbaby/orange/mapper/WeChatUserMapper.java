@@ -31,7 +31,10 @@ public interface WeChatUserMapper {
      * @param userId userId
      * @return user
      */
-    @Select({"select username,profile from wechat_user where userId = #{userId} and state=1"})
+    @Select({"select userId, username,profile from wechat_user where userId = #{userId} and state=1"})
+    @Results({
+            @Result(property = "userId", column = "userId")
+    })
     WeChatUser queryUserNameAndProfile(int userId);
     /**
      * 创建用户
