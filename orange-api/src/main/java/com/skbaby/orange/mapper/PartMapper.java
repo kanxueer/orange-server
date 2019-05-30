@@ -99,7 +99,7 @@ public interface PartMapper{
      * @param partId partId
      * @return 主键id
      */
-    @Delete({"update part set state= 0 where id=#{partId}"})
+    @Delete({"update part set state= 0 where partId=#{partId}"})
     @Options(useGeneratedKeys = true, keyProperty = "partId", keyColumn = "partId")
     int deletePart(int partId);
 
