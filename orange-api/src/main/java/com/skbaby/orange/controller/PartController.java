@@ -110,10 +110,10 @@ public class PartController {
      */
     @SecurityAspect
     @DeleteMapping(value = "/orange/queue/{partId}")
-    public String deletePart(@PathVariable("partId") String partId){
+    public String deletePart(@PathVariable("partId") Integer partId){
         ResponseType responseType = ResponseUtil.defaultResponse();
         try {
-            partService.deletePart(Integer.parseInt(partId));
+            partService.deletePart(partId);
         } catch (DaoException e) {
             responseType.setCode(ErrorCode.DELETE_ERROR.getCode());
             responseType.setErr_msg(ErrorCode.DELETE_ERROR.getMsg());
