@@ -66,7 +66,7 @@ public interface ActivityMapper {
      * @param activityId activity id
      * @return Activity
      */
-    @Select({"select activityId,title,description,location from activity where activityId = #{activityId}"})
+    @Select({"select activityId,userId,title,description,startTime,endTime,unit,location,quantity,state,dataCreate_LastTime,dataChange_LastTime from activity where activityId = #{activityId}"})
     Activity queryBaiscById(int activityId, int userId);
 
     /**
