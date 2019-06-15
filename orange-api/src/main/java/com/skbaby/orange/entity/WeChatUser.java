@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 
 @Data
 public class WeChatUser {
-    private int userId;
+    private Integer userId;
     private String username;
     private String openId;
     private String token;

@@ -23,6 +23,12 @@ public interface PartMapper{
                             select = "com.skbaby.orange.mapper.WeChatUserMapper.queryUserNameAndProfile",
                             fetchType = FetchType.LAZY
                     )
+            ),
+            @Result(property = "activityInfo", column = "activityId",
+                    one = @One(
+                            select = "com.skbaby.orange.mapper.ActivityMapper.queryBaiscById",
+                            fetchType = FetchType.LAZY
+                    )
             )
     })
     List<Part> queryByActivityId(int activityId);
@@ -40,6 +46,12 @@ public interface PartMapper{
             @Result(property = "userInfo", column = "userId",
                     one = @One(
                             select = "com.skbaby.orange.mapper.WeChatUserMapper.queryUserNameAndProfile",
+                            fetchType = FetchType.LAZY
+                    )
+            ),
+            @Result(property = "activityInfo", column = "activityId",
+                    one = @One(
+                            select = "com.skbaby.orange.mapper.ActivityMapper.queryBaiscById",
                             fetchType = FetchType.LAZY
                     )
             )
@@ -60,6 +72,12 @@ public interface PartMapper{
                             select = "com.skbaby.orange.mapper.WeChatUserMapper.queryUserNameAndProfile",
                             fetchType = FetchType.LAZY
                     )
+            ),
+            @Result(property = "activityInfo", column = "activityId",
+                    one = @One(
+                            select = "com.skbaby.orange.mapper.ActivityMapper.queryBaiscById",
+                            fetchType = FetchType.LAZY
+                    )
             )
     })
     Part queryById(int partId);
@@ -73,9 +91,16 @@ public interface PartMapper{
     @Results({
             @Result(property = "partId", column = "partId"),
             @Result(property = "userId", column = "userId"),
+            @Result(property = "activityId", column = "activityId"),
             @Result(property = "userInfo", column = "userId",
                     one = @One(
                             select = "com.skbaby.orange.mapper.WeChatUserMapper.queryUserNameAndProfile",
+                            fetchType = FetchType.LAZY
+                    )
+            ),
+            @Result(property = "activityInfo", column = "activityId",
+                    one = @One(
+                            select = "com.skbaby.orange.mapper.ActivityMapper.queryBaiscById",
                             fetchType = FetchType.LAZY
                     )
             )

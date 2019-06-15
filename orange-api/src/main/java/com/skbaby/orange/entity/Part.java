@@ -6,14 +6,15 @@ import java.sql.Timestamp;
 
 @Data
 public class Part {
-    private int partId;
-    private int userId;
-    private int activityId;
-    private int quantity;
-    private int shareType;
-    private int shareId;
-    private int state;
+    private Integer partId;
+    private Integer userId;
+    private Integer activityId;
+    private Integer quantity;
+    private Integer shareType;
+    private Integer shareId;
+    private Integer state;
     private Timestamp dataCreate_LastTime;
     private Timestamp dataChange_LastTime;
     private WeChatUser userInfo;
+    private Activity activityInfo;
 }

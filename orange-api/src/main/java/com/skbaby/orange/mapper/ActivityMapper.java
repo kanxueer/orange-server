@@ -59,6 +59,16 @@ public interface ActivityMapper {
     })
     Activity queryById(int activityId, int userId);
 
+
+    /**
+     * 查询活动
+     *
+     * @param activityId activity id
+     * @return Activity
+     */
+    @Select({"select activityId,title,description,location from activity where activityId = #{activityId}"})
+    Activity queryBaiscById(int activityId, int userId);
+
     /**
      * 新增Activity对象
      *

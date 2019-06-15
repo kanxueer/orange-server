@@ -8,16 +8,16 @@ import java.util.List;
 
 @Data
 public class Activity {
-    private int activityId;
-    private int userId;
+    private Integer activityId;
+    private Integer userId;
     private String title;
     private String description;
     private Timestamp startTime;
     private Timestamp endTime;
     private String unit;
     private String location;
-    private int quantity;
-    private int state;
+    private Integer quantity;
+    private Integer state;
     private Timestamp dataCreate_LastTime;
     private Timestamp dataChange_LastTime;
     private List<Part> parts;
